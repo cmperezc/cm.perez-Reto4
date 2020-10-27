@@ -455,8 +455,8 @@ public class accidents implements Comparable <accidents> {
 
 	@Override
 	public int compareTo(accidents o) {
-		// TODO Auto-generated method stub
 		return 0;
+
 	}
 
 

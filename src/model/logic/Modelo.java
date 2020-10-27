@@ -14,6 +14,7 @@ import model.data_structures.LinearProbingHashST;
 import model.data_structures.RedBlackBST;
 import model.data_structures.SeparateChainingHashST;
 import model.data_structures.listaDoble;
+import model.data_structures.Ayuda.Cola;
 
 /**
  * Definicion del modelo del mundo
@@ -29,92 +30,24 @@ public class Modelo {
 	private IArregloDinamico <Integer> datos;
 
 	public static String ARCHIVO = "./data/us_accidents_small.csv";
-
-	private SeparateChainingHashST<Integer, Movie> tablaSt;
-	private SeparateChainingHashST<String, listaDoble<Movie>> tablaLinear;
-	private SeparateChainingHashST<String, listaDoble<Movie>> tablaLinear2;
-	private SeparateChainingHashST<String, listaDoble<Movie>> tablaLinear3;
 	private RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>> Bst;
 	private BST<Date, BST<Double, listaDoble<accidents>>> bst2;
-
-
-	private Catalog catalogo;
-	private Catalog catalogo2;
-
-	/**
-	 * Constructor del modelo del mundo con capacidad predefinida
-	 */
-	public Modelo()
-	{
-		datos = new ArregloDinamico <Integer> (7);
-		catalogo = new Catalog();
-		catalogo2 = new Catalog();
-
-	}
-
-	/**
-	 * Constructor del modelo del mundo con capacidad dada
-	 * @param tamano
-	 */
-	public Modelo(int capacidad)
-	{
-		datos = new ArregloDinamico <Integer> (capacidad);
-	}
-
-	/**
-	 * Servicio de consulta de numero de elementos presentes en el modelo 
-	 * @return numero de elementos presentes en el modelo
-	 */
-	public int darTamano()
-	{
-		return datos.darTamano();
-	}
-
-	/**
-	 * Requerimiento de agregar dato
-	 * @param dato
-	 */
-	public void agregar(Integer dato)
-	{	
-		datos.agregar(dato);
-	}
-
-	/**
-	 * Requerimiento buscar dato
-	 * @param dato Dato a buscar
-	 * @return dato encontrado
-	 */
-	public Integer buscar(Integer dato)
-	{
-		return datos.buscar(dato);
-	}
-
-	/**
-	 * Requerimiento eliminar dato
-	 * @param dato Dato a eliminar
-	 * @return dato eliminado
-	 */
-	public Integer eliminar(Integer dato)
-	{
-		return datos.eliminar(dato);
-	}
-
+	private RedBlackBST<Date, listaDoble<accidents>> arbolR2;
+	private RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>> arbolR3;
+	private RedBlackBST<Date, RedBlackBST<String, listaDoble<accidents>>> arbolR4;
+	private RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>> arbolR5;
 
 	public void cargaDatos() {
 
 		int contador=0;
-
-		tablaSt = new SeparateChainingHashST<Integer, Movie>(1);
-		tablaLinear = new SeparateChainingHashST<String, listaDoble<Movie>>(1);
-		tablaLinear2 = new SeparateChainingHashST<String, listaDoble<Movie>>(1);
-		tablaLinear3 = new SeparateChainingHashST<String, listaDoble<Movie>>(1);
 		Bst = new RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>>();
 		bst2= new BST<Date, BST<Double, listaDoble<accidents>>>(); 
+		arbolR2 = new RedBlackBST<Date, listaDoble<accidents>>();
+		arbolR3 = new RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>>();
+		arbolR4 = new RedBlackBST<Date, RedBlackBST<String, listaDoble<accidents>>>();
+		arbolR5 = new RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>>();
+		
 
-
-
-
-		Integer idPeliculaAct = -1;
 		String id=null;
 
 		File archivo1 = new File (ARCHIVO);
@@ -209,6 +142,8 @@ public class Modelo {
 					accidentes.setAstronomical_Twilight(atributos[48]);
 				}
 				DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
+				DateFormat hora = new SimpleDateFormat("HH:MM");
+				/////////////////////
 				BST<Double, listaDoble<accidents>> nuevo = bst2.get(fechaHora2.parse(atributos[4]));
 
 				if (nuevo!=null) {
@@ -250,13 +185,87 @@ public class Modelo {
 					nuevo2.put(Double.parseDouble(atributos[3]), lista2);
 				}
 				Bst.put(fechaHora2.parse(atributos[4]), nuevo2);
+				
+				////////////////////////////
+				if (arbolR2.contains(fechaHora2.parse(atributos[4]))) {
+					arbolR2.get(fechaHora2.parse(atributos[4]));
+				}else {
+					listaDoble<accidents> t = new listaDoble<accidents>();
+					t.agregarfinal(accidentes);
+					arbolR2.put(fechaHora2.parse(atributos[4]), t);
+				}
+				
+				/////////////////////////////
+				RedBlackBST<Double, listaDoble<accidents>> nuevo3 = arbolR3.get(fechaHora2.parse(atributos[4]));
+
+				if (nuevo3!=null) {
+					listaDoble<accidents> lista2 = nuevo3.get(Double.parseDouble(atributos[3]));
+					if (lista2!=null) {
+						lista2.agregarInicio(accidentes);
+
+					}
+					else {
+						lista2 = new listaDoble<accidents>();
+						lista2.agregarInicio(accidentes);
+					}
+					nuevo3.put(Double.parseDouble(atributos[3]), lista2);
+				}else {
+					nuevo3=new RedBlackBST<Double, listaDoble<accidents>>();
+					listaDoble<accidents> lista2= new listaDoble<accidents>();
+					lista2.agregarInicio(accidentes);
+					nuevo3.put(Double.parseDouble(atributos[3]), lista2);
+				}
+				arbolR3.put(fechaHora2.parse(atributos[4]), nuevo2);
+				///////////////////////////////
+				RedBlackBST<String, listaDoble<accidents>> nuevo4 = arbolR4.get(fechaHora2.parse(atributos[4]));
+
+				if (nuevo4!=null) {
+					listaDoble<accidents> lista2 = nuevo4.get((atributos[17]));
+					if (lista2!=null) {
+						lista2.agregarInicio(accidentes);
+
+					}
+					else {
+						lista2 = new listaDoble<accidents>();
+						lista2.agregarInicio(accidentes);
+					}
+					nuevo4.put(atributos[17], lista2);
+				}else {
+					nuevo4=new RedBlackBST<String, listaDoble<accidents>>();
+					listaDoble<accidents> lista2= new listaDoble<accidents>();
+					lista2.agregarInicio(accidentes);
+					nuevo4.put(atributos[17], lista2);
+				}
+				arbolR4.put(fechaHora2.parse(atributos[4]), nuevo4);
+				///////////////////////
+				RedBlackBST<Double, listaDoble<accidents>> nuevo5 = arbolR5.get(hora.parse(atributos[4]));
+
+				if (nuevo5!=null) {
+					listaDoble<accidents> lista = nuevo5.get(Double.parseDouble(atributos[3]));
+					if (lista!=null) {
+						lista.agregarInicio(accidentes);
+
+					}
+					else {
+						lista = new listaDoble<accidents>();
+						lista.agregarInicio(accidentes);
+					}
+					nuevo5.put(Double.parseDouble(atributos[3]), lista);
+				}else {
+					nuevo5=new RedBlackBST<Double, listaDoble<accidents>>();
+					listaDoble<accidents> lista2= new listaDoble<accidents>();
+					lista2.agregarInicio(accidentes);
+					nuevo5.put(Double.parseDouble(atributos[3]), lista2);
+				}
+				arbolR5.put(hora.parse(atributos[4]), nuevo5);
+				
 
 
 			}
 
 
 		}catch (Exception e) {
-			System.out.println("error fatal: en pelicula " + idPeliculaAct + " descripción error: " + e.getMessage() );
+			System.out.println("error fatal" );
 		}
 		finally {
 			try {
@@ -275,13 +284,6 @@ public class Modelo {
 		System.out.println("numero de accidentes:"+contador + "llaves" + Bst.size()+"altura"+Bst.height()+"min:"+Bst.min()+"max:"+Bst.max()+"CON RBS");
 	}
 
-	public Catalog getCatalogo() {
-		return catalogo;
-	}
-
-	public void setCatalogo(Catalog catalogo) {
-		this.catalogo = catalogo;
-	}
 
 	public String R1BSt(Date fecha) {
 		int contador = 0;
@@ -305,6 +307,98 @@ public class Modelo {
 			contador+=totalSever;
 		}
 		return "el numero de accidentes en la fecha es:"+contador;
+	}
+	public String R2(Date fechaFinal) {
+		int contador=0;
+		int actual=0;
+		Date fecha=null;
+		listaDoble<accidents>lista=new listaDoble<accidents>();
+		for (Date key3 : arbolR2.keys(arbolR2.min(), fechaFinal)) {
+			lista = arbolR2.get(key3);
+			if (lista.darTamaño()>actual) {
+				actual=lista.darTamaño();
+				fecha=key3;
+			}
+			contador=+lista.darTamaño();
+
+		}
+		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la fecha con mas accidentes es:"+fecha+"con un numero de accidesnte de:"+actual;
+	}
+	
+	public String R3(Date fechaInicial, Date fechaFinal) {
+		int contador=0;
+		int actual=0;
+		double s=0;
+		listaDoble<accidents>lista=new listaDoble<accidents>();
+		for (Date key3 : arbolR3.keys(fechaInicial, fechaFinal)) {
+			for (double key : arbolR3.get(key3).keys()) {
+				lista = arbolR3.get(key3).get(key);
+				if (lista.darTamaño()>actual) {
+					actual=lista.darTamaño();
+					s=key;
+				}
+				contador=+lista.darTamaño();
+
+			}
+			
+		}
+		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la severi:"+s+"con un numero de accidesnte de:"+actual;
+	}
+	
+	public String R4(Date fechaInicial, Date fechaFinal) {
+		int contador=0;
+		int actual=0;
+		int actualFecha=0;
+		Date fecha=null;
+		String s=null;
+		listaDoble<accidents>lista=new listaDoble<accidents>();
+		for (Date key3 : arbolR4.keys(fechaInicial, fechaFinal)) {
+			contador=0;
+			for (String key : arbolR4.get(key3).keys()) {
+				lista = arbolR4.get(key3).get(key);
+				if (lista.darTamaño()>actual) {
+					actual=lista.darTamaño();
+					s=key;
+					contador=+lista.darTamaño();
+
+				}
+				
+			}
+			if (contador>actualFecha) {
+				actualFecha=contador;;
+				fecha=key3;
+			}
+			
+		}
+		return "el numero de accidens antes de la fecha dada es de:"+contador+"y el estado:"+s+"con un numero de accidesnte de:"+actual;
+	}
+	
+	public String R5(Date horaInicial, Date horaFinal) {
+		int contador=0;
+		int actual=0;
+		double s=0;
+		Date fecha=null;
+		int actualFecha=0;
+		listaDoble<accidents>lista=new listaDoble<accidents>();
+		for (Date key3 : arbolR5.keys(horaInicial, horaFinal)) {
+			contador=0;
+			for (double key : arbolR5.get(key3).keys()) {
+				lista = arbolR5.get(key3).get(key);
+				if (lista.darTamaño()>actual) {
+					actual=lista.darTamaño();
+					s=key;
+					contador=+lista.darTamaño();
+
+				}
+				
+			}
+			if (contador>actualFecha) {
+				actualFecha=contador;;
+				fecha=key3;
+			}
+			
+		}
+		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la severi:"+s+"con un numero de accidesnte de:"+actual;
 	}
 
 }
