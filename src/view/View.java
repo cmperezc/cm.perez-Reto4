@@ -15,12 +15,12 @@ public class View
 		public void printMenu()
 		{
 			System.out.println("1. cargar");
-			System.out.println("2. con BST");
-			System.out.println("3. con RBS");
-			System.out.println("4. Eliminar String");
-			System.out.println("5. Imprimir el Arreglo");
-			System.out.println("6. Exit");
-			System.out.println("Dar el numero de opcion a resolver, luego oprimir tecla Return: (e.g., 1):");
+			System.out.println("2. Requerimiemt 1");
+			System.out.println("3. Requerimiemt 2");
+			System.out.println("4. Requerimiemt 3");
+			System.out.println("5. Requerimiemt 4");
+			System.out.println("6. Requerimiemt 6");
+			System.out.println("7. exit");
 		}
 
 		public void printMessage(String mensaje) {

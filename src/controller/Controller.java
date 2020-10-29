@@ -58,7 +58,7 @@ public class Controller {
 					
 				case 2: 
 					try{
-						view.printMessage("diga nombre de la compañia"); 
+						view.printMessage("ingrese la fecha(formato: YYY-MM-DD):"); 
 						String nombreCompa=entradaEscaner.nextLine();
 						DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
 						view.printMessage(modelo.R1BSt(fechaHora2.parse(nombreCompa)));
@@ -70,10 +70,49 @@ public class Controller {
 					
 				case 3: 
 					try{
-						view.printMessage("diga nombre de la compañia"); 
+						view.printMessage("ingrese la fecha(formato: YYY-MM-DD"); 
 						String nombreCompa=entradaEscaner.nextLine();
 						DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
-						view.printMessage(modelo.R1RBS(fechaHora2.parse(nombreCompa)));
+						view.printMessage(modelo.R2(fechaHora2.parse(nombreCompa)));
+						break;
+						}catch(Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				case 4: 
+					try{
+						view.printMessage("ingrese fecha inicial(formato: YYY-MM-DD)"); 
+						String fechaInicial=entradaEscaner.nextLine();
+						view.printMessage("ingrese fecha final(formato: YYY-MM-DD)"); 
+						String fechaFinal=entradaEscaner.nextLine();
+						DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
+						view.printMessage(modelo.R3(fechaHora2.parse(fechaInicial), fechaHora2.parse(fechaFinal)));
+						break;
+						}catch(Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				case 5: 
+					try{
+						view.printMessage("ingrese fecha inicial(formato: YYY-MM-DD)"); 
+						String fechaInicial=entradaEscaner.nextLine();
+						view.printMessage("ingrese fecha final(formato: YYY-MM-DD)"); 
+						String fechaFinal=entradaEscaner.nextLine();
+						DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
+						view.printMessage(modelo.R4(fechaHora2.parse(fechaInicial), fechaHora2.parse(fechaFinal)));
+						break;
+						}catch(Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				case 6: 
+					try{
+						view.printMessage("ingrese hora inicial(formato:HH-MM)"); 
+						String fechaInicial=entradaEscaner.nextLine();
+						view.printMessage("ingrese hora final(formato: HH-MM)"); 
+						String fechaFinal=entradaEscaner.nextLine();
+						DateFormat hora = new SimpleDateFormat("HH:MM");
+						view.printMessage(modelo.R4(hora.parse(fechaInicial), hora.parse(fechaFinal)));
 						break;
 						}catch(Exception e) {
 							// TODO Auto-generated catch block
