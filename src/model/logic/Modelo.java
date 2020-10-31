@@ -5,15 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
-import model.data_structures.ArregloDinamico;
 import model.data_structures.BST;
-import model.data_structures.IArregloDinamico;
-import model.data_structures.LinearProbingHashST;
+
 import model.data_structures.RedBlackBST;
-import model.data_structures.SeparateChainingHashST;
+
 import model.data_structures.listaDoble;
 import model.data_structures.Ayuda.Cola;
 
@@ -31,24 +31,32 @@ public class Modelo {
 	public static String anio17 = "./data/us_accidents_dis_2017.csv";
 	public static String anio18 = "./data/us_accidents_dis_2018.csv";
 	public static String anio19 = "./data/us_accidents_dis_2019.csv";
+	public static String todo = "./data/US_Accidents_Dec19.csv";
 	private RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>> Bst;
 	private BST<Date, BST<Double, listaDoble<accidents>>> bst2;
 	private RedBlackBST<Date, listaDoble<accidents>> arbolR2;
 	private RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>> arbolR5;
-	private RedBlackBST<Date, listaDoble<accidents>> arbolR5N;
+	private RedBlackBST<LocalTime, listaDoble<accidents>> arbolR5N;
+	private RedBlackBST<llave, listaDoble<accidents>> arbolR6;
+	listaDoble<accidents>listaR6=new listaDoble<accidents>();
 
 	public void cargaDatos() {
 		listaDoble<String>listaArchivos=new listaDoble<String>();
-		listaArchivos.agregarInicio(anio16);
-		listaArchivos.agregarInicio(anio17);
-		listaArchivos.agregarInicio(anio18);
-		listaArchivos.agregarInicio(anio19);
+
+		//listaArchivos.agregarInicio(anio16);
+		//listaArchivos.agregarInicio(anio17);
+		//listaArchivos.agregarInicio(anio18);
+		//listaArchivos.agregarInicio(anio19);
+		listaArchivos.agregarInicio(todo);
 
 		int contador=0;
 		Bst = new RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>>();
 		bst2= new BST<Date, BST<Double, listaDoble<accidents>>>(); 
 		arbolR2 = new RedBlackBST<Date, listaDoble<accidents>>();
 		arbolR5 = new RedBlackBST<Date, RedBlackBST<Double, listaDoble<accidents>>>();
+		arbolR5N = new RedBlackBST<LocalTime, listaDoble<accidents>>();
+		arbolR6 = new RedBlackBST<llave, listaDoble<accidents>>();
+
 		for (int i = 0; i < listaArchivos.darTamaño(); i++) {
 			ARCHIVO=listaArchivos.darElemento(i);
 
@@ -144,8 +152,9 @@ public class Modelo {
 						accidentes.setNautical_Twilight(atributos[47]);
 						accidentes.setAstronomical_Twilight(atributos[48]);
 					}
+					llave key = new llave(Double.parseDouble(atributos[6]), Double.parseDouble(atributos[7]));
 					DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
-					//DateFormat hora = new SimpleDateFormat("hh:mm");
+					DateFormat hora = new SimpleDateFormat("HH:mm:ss");
 					/////////////////////
 					BST<Double, listaDoble<accidents>> nuevo = bst2.get(fechaHora2.parse(atributos[4]));
 
@@ -199,14 +208,24 @@ public class Modelo {
 
 
 					///////////////////////
-//					listaDoble<accidents> t2 = arbolR5N.get((hora.parse(atributos[4])));
-//					if (t2 == null) {
-//						t2 = new listaDoble<accidents>();
-//					}						
-//					t2.agregarInicio(accidentes);
-//					arbolR5N.put(hora.parse(atributos[4]), t2);			
+					LocalTime localTime = LocalTime.parse(atributos[4].split(" ")[1], DateTimeFormatter.ofPattern("HH:mm:ss"));
+					listaDoble<accidents> t2 = arbolR5N.get(localTime);
+					if (t2 == null) {
+						t2 = new listaDoble<accidents>();
+					}						
+					t2.agregarInicio(accidentes);
+					arbolR5N.put(localTime, t2);		
+					////////////////////
+					/*
+					if (arbolR6.contains(key)) {
+						arbolR6.get(key).agregarInicio(accidentes);
+					}else {
+						listaDoble<accidents> v = new listaDoble<accidents>();
+						v.agregarInicio(accidentes);
+						arbolR6.put(key, v);
 
-
+					}
+					 */
 
 				}
 
@@ -268,7 +287,7 @@ public class Modelo {
 				actual=lista.darTamaño();
 				fecha=key3;
 			}
-			contador=+lista.darTamaño();
+			contador+=lista.darTamaño();
 
 		}
 		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la fecha con mas accidentes es:"+fecha+"con un numero de accidesnte de:"+actual;
@@ -289,7 +308,7 @@ public class Modelo {
 				listaDoble<accidents> listaSeveridad = aux.get(accidente.getSeverity());
 				// Si la lista no es nula, agregamos el accidente
 				if (listaSeveridad != null) {
-					listaSeveridad.agregarfinal(accidente);
+					listaSeveridad.agregarInicio(accidente);
 				} else { //si la lista es nula, inicializamos la lista y luego añadimos el accidente
 					listaSeveridad = new listaDoble<accidents>();
 					listaSeveridad.agregarInicio(accidente);
@@ -299,9 +318,10 @@ public class Modelo {
 				// Contamos la cantidad total de accidentes en el rango de fechas
 				contador++;
 			}
+
 		}
 		// Recorrido por severidad
-		for(Double severidad: aux.keys()) {
+		for(Double severidad: aux.keys(aux.min(), aux.max())) {
 			// Lista de todos los accidentes con la severidad actual 
 			listaDoble<accidents> lista = aux.get(severidad);
 			// Encontrar la severidad con mayor número de accidentes
@@ -310,13 +330,15 @@ public class Modelo {
 				s = severidad;
 			}
 		}
-		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la severi:"+s+"con un numero de accidesnte de:"+actual;
+		return "el numero de accidentes antes de la fecha dada es de:"+contador+"y la severidad con mayor numero de accidentes es:"+s+"con un numero de:"+actual;
 	}
 
 	public String R4(Date fechaInicial, Date fechaFinal) {
 		int contador=0;
 		int actual=0;
 		String s=null;
+		Date fecha=null;
+		int actualFecha=0;
 		RedBlackBST<String, listaDoble<accidents>> aux = new RedBlackBST<String, listaDoble<accidents>>();
 		// Recorrido por fechas
 		for (Date key : arbolR2.keys(fechaInicial, fechaFinal)) {
@@ -328,7 +350,7 @@ public class Modelo {
 				listaDoble<accidents> listaEstado = aux.get(accidente.getState());
 				// Si la lista no es nula, agregamos el accidente
 				if (listaEstado != null) {
-					listaEstado.agregarfinal(accidente);
+					listaEstado.agregarInicio(accidente);
 				} else { //si la lista es nula, inicializamos la lista y luego añadimos el accidente
 					listaEstado = new listaDoble<accidents>();
 					listaEstado.agregarInicio(accidente);
@@ -337,10 +359,13 @@ public class Modelo {
 				aux.put(accidente.getState(), listaEstado);
 				// Contamos la cantidad total de accidentes en el rango de fechas
 				contador++;
+			
 			}
+
+			
 		}
 		// Recorrido por severidad
-		for(String state: aux.keys()) {
+		for(String state: aux.keys(aux.min(), aux.max())) {
 			// Lista de todos los accidentes con la severidad actual 
 			listaDoble<accidents> lista = aux.get(state);
 			// Encontrar la severidad con mayor número de accidentes
@@ -349,16 +374,32 @@ public class Modelo {
 				s = state;
 			}
 		}
-		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la severi:"+s+"con un numero de accidesnte de:"+actual;
+		return "el numero de accidens entre las 2 fechas es de:"+contador+" "+ "y el state con mayor numero de accidentes: es"+s+" "+"con un numero de accidentes de:"+actual;
+	}
+	public String R45(Date fechainicial, Date fechaFinal) {
+		int contador=0;
+		int actual=0;
+		Date fecha=null;
+		listaDoble<accidents>lista=new listaDoble<accidents>();
+		for (Date key3 : arbolR2.keys(fechainicial, fechaFinal)) {
+			lista = arbolR2.get(key3);
+			if (lista.darTamaño()>actual) {
+				actual=lista.darTamaño();
+				fecha=key3;
+			}
+			contador+=lista.darTamaño();
+
+		}
+		return "la fecha con mas accidentes es:"+fecha+"con un numero de accidentes de:"+actual;
 	}
 
-	public String R5(Date horaInicial, Date horaFinal) {
+	public String R5(LocalTime horaInicial, LocalTime horaFinal) {
 		int contador=0;
 		int actual=0;
 		Double s=null;
 		RedBlackBST<Double, listaDoble<accidents>> aux = new RedBlackBST<Double, listaDoble<accidents>>();
 		// Recorrido por fechas
-		for (Date key : arbolR5N.keys(horaInicial, horaFinal)) {
+		for (LocalTime key : arbolR5N.keys(horaInicial, horaFinal)) {
 			// Lista de los accidentes de la fecha = key
 			listaDoble<accidents>lista = arbolR5N.get(key);
 			// Recorrido de accidentes de la fecha actual (key)
@@ -367,7 +408,7 @@ public class Modelo {
 				listaDoble<accidents> listaEstado = aux.get(accidente.getSeverity());
 				// Si la lista no es nula, agregamos el accidente
 				if (listaEstado != null) {
-					listaEstado.agregarfinal(accidente);
+					listaEstado.agregarInicio(accidente);
 				} else { //si la lista es nula, inicializamos la lista y luego añadimos el accidente
 					listaEstado = new listaDoble<accidents>();
 					listaEstado.agregarInicio(accidente);
@@ -379,16 +420,18 @@ public class Modelo {
 			}
 		}
 		// Recorrido por severidad
-		for(Double severity: aux.keys()) {
+		for(Double severity: aux.keys(aux.min(), aux.max())) {
 			// Lista de todos los accidentes con la severidad actual 
 			listaDoble<accidents> lista = aux.get(severity);
 			// Encontrar la severidad con mayor número de accidentes
-			if(lista.darTamaño() > actual) {
-				actual = lista.darTamaño();
-				s = severity;
-			}
+
+			System.out.println("severidad:"+severity+":"+"con un tamano de: "+(double)lista.darTamaño()+"y el porcentaje con respecto al total de accidentes es de: "+" "+((double)lista.darTamaño()*100)/(double)contador);
+
 		}
-		return "el numero de accidens antes de la fecha dada es de:"+contador+"y la severi:"+s+"con un numero de accidesnte de:"+actual;
+		return "el numero de accidens antes de la fecha dada es de:"+contador;
 
 	}
+	
+	
+	 
 }

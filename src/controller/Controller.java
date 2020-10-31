@@ -3,6 +3,8 @@ package controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -100,6 +102,7 @@ public class Controller {
 						String fechaFinal=entradaEscaner.nextLine();
 						DateFormat fechaHora2 = new SimpleDateFormat("yyyy-MM-dd");
 						view.printMessage(modelo.R4(fechaHora2.parse(fechaInicial), fechaHora2.parse(fechaFinal)));
+						view.printMessage(modelo.R45(fechaHora2.parse(fechaInicial), fechaHora2.parse(fechaFinal)));
 						break;
 						}catch(Exception e) {
 							// TODO Auto-generated catch block
@@ -111,15 +114,15 @@ public class Controller {
 						String fechaInicial=entradaEscaner.nextLine();
 						view.printMessage("ingrese hora final(formato: HH-MM)"); 
 						String fechaFinal=entradaEscaner.nextLine();
-						DateFormat hora = new SimpleDateFormat("HH:MM");
-						view.printMessage(modelo.R4(hora.parse(fechaInicial), hora.parse(fechaFinal)));
+						LocalTime localTime = LocalTime.parse(fechaInicial, DateTimeFormatter.ofPattern("HH:mm"));
+						LocalTime localTime2 = LocalTime.parse(fechaFinal, DateTimeFormatter.ofPattern("HH:mm"));
+						view.printMessage(modelo.R5(localTime, localTime2));
 						break;
 						}catch(Exception e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 			
-
 				
 				case 7: 
 					fin=true;
