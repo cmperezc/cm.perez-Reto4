@@ -3,6 +3,8 @@ package model.data_structures;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import model.data_structures.Nodo;
+
 public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 
 	private Nodo<T> inicio;
@@ -148,7 +150,3 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 		return new ListIterator();
 	}
 }
-
-
-
-
