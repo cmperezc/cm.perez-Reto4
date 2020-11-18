@@ -1,92 +1,75 @@
 package model.logic;
 
-import java.util.Date;
 
 public class citiBike {
 	
 	
 
-	private int tripduration;
+	private String tripduration;
 
-	private Date starttime;
+	private String starttime;
 	
-	private Date stoptime;
+	private String stoptime;
 
-	private int startStationId;
+	private double startStationId;
 
 	private String startStationName;
 
-	private int startStationLatitude;
+	private double startStationLatitude;
 
-	private int startStationLongitude;
+	private double startStationLongitude;
 
-	private int endStationId;
+	private double endStationId;
 
 	private String endStationName;
 
-	private int endStationLatitude;
+	private double endStationLatitude;
 
-	private int endStationLongitude;
+	private double endStationLongitude;
 
-	private int bikeid;
+	private double bikeid;
 
 	private String usertype;
 
-	private int birthYear;
+	private double birthYear;
 
-	private int gender;
+	private double gender;
 	
-	public citiBike(int tripduration, Date starttime, Date stoptime, int startStationId, String startStationName,
-			int startStationLatitude, int startStationLongitude, int endStationId, String endStationName,
-			int endStationLatitude, int endStationLongitude, int bikeid, String usertype, int birthYear, int gender) {
-		super();
+	public citiBike(String tripduration) {
 		this.tripduration = tripduration;
-		this.starttime = starttime;
-		this.stoptime = stoptime;
-		this.startStationId = startStationId;
-		this.startStationName = startStationName;
-		this.startStationLatitude = startStationLatitude;
-		this.startStationLongitude = startStationLongitude;
-		this.endStationId = endStationId;
-		this.endStationName = endStationName;
-		this.endStationLatitude = endStationLatitude;
-		this.endStationLongitude = endStationLongitude;
-		this.bikeid = bikeid;
-		this.usertype = usertype;
-		this.birthYear = birthYear;
-		this.gender = gender;
+		
 	}
 
-	public int getTripduration() {
+	public String getTripduration() {
 		return tripduration;
 	}
 
-	public void setTripduration(int tripduration) {
+	public void setTripduration(String tripduration) {
 		this.tripduration = tripduration;
 	}
 
-	public Date getStarttime() {
+	public String getStarttime() {
 		return starttime;
 	}
 
-	public void setStarttime(Date starttime) {
+	public void setStarttime(String starttime) {
 		this.starttime = starttime;
 	}
 
-	public Date getStoptime() {
+	public String getStoptime() {
 		return stoptime;
 	}
 
-	public void setStoptime(Date stoptime) {
+	public void setStoptime(String stoptime) {
 		this.stoptime = stoptime;
 	}
 
-	public int getStartStationId() {
+	public double getStartStationId() {
 		return startStationId;
 	}
 
-	public void setStartStationId(int startStationId) {
-		this.startStationId = startStationId;
+	public void setStartStationId(double d) {
+		this.startStationId = d;
 	}
 
 	public String getStartStationName() {
@@ -97,27 +80,27 @@ public class citiBike {
 		this.startStationName = startStationName;
 	}
 
-	public int getStartStationLatitude() {
+	public double getStartStationLatitude() {
 		return startStationLatitude;
 	}
 
-	public void setStartStationLatitude(int startStationLatitude) {
+	public void setStartStationLatitude(double startStationLatitude) {
 		this.startStationLatitude = startStationLatitude;
 	}
 
-	public int getStartStationLongitude() {
+	public double getStartStationLongitude() {
 		return startStationLongitude;
 	}
 
-	public void setStartStationLongitude(int startStationLongitude) {
+	public void setStartStationLongitude(double startStationLongitude) {
 		this.startStationLongitude = startStationLongitude;
 	}
 
-	public int getEndStationId() {
+	public double getEndStationId() {
 		return endStationId;
 	}
 
-	public void setEndStationId(int endStationId) {
+	public void setEndStationId(double endStationId) {
 		this.endStationId = endStationId;
 	}
 
@@ -129,27 +112,27 @@ public class citiBike {
 		this.endStationName = endStationName;
 	}
 
-	public int getEndStationLatitude() {
+	public double getEndStationLatitude() {
 		return endStationLatitude;
 	}
 
-	public void setEndStationLatitude(int endStationLatitude) {
+	public void setEndStationLatitude(double endStationLatitude) {
 		this.endStationLatitude = endStationLatitude;
 	}
 
-	public int getEndStationLongitude() {
+	public double getEndStationLongitude() {
 		return endStationLongitude;
 	}
 
-	public void setEndStationLongitude(int endStationLongitude) {
+	public void setEndStationLongitude(double endStationLongitude) {
 		this.endStationLongitude = endStationLongitude;
 	}
 
-	public int getBikeid() {
+	public double getBikeid() {
 		return bikeid;
 	}
 
-	public void setBikeid(int bikeid) {
+	public void setBikeid(double bikeid) {
 		this.bikeid = bikeid;
 	}
 
@@ -161,19 +144,19 @@ public class citiBike {
 		this.usertype = usertype;
 	}
 
-	public int getBirthYear() {
+	public double getBirthYear() {
 		return birthYear;
 	}
 
-	public void setBirthYear(int birthYear) {
+	public void setBirthYear(double birthYear) {
 		this.birthYear = birthYear;
 	}
 
-	public int getGender() {
+	public double getGender() {
 		return gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(double gender) {
 		this.gender = gender;
 	}
 

@@ -1,14 +1,12 @@
 package model.data_structures;
 
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import model.data_structures.Nodo;
-
-public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
-
-	private Nodo<T> inicio;
-	private Nodo<T> fin;
+public class listaDoble<T > implements Iterable<T> {
+	private Nodo1<T> inicio;
+	private Nodo1<T> fin;
 	private int tamaño = 0;
 
 
@@ -24,29 +22,29 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 	public boolean estaVacia(){
 		return darTamaño() == 0;
 	}
-	public Nodo<T> darInicio(){
+	public Nodo1<T> darInicio(){
 		return inicio;
 	}
 	public void agregarInicio(T item){
-		Nodo<T> NuevoInicio = new Nodo<T> (item, inicio, null);
+		Nodo1<T> NuevoInicio = new Nodo1<T> (item, inicio, null);
 		if (!estaVacia()) {
 			inicio.CambiarAnterior(NuevoInicio);
 			inicio = NuevoInicio;
 			tamaño++;
 		}else{
-			inicio = new Nodo<T>(item, null, null);  
+			inicio = new Nodo1<T>(item, null, null);  
 			tamaño++;
 		}
 	}
 	public void agregarfinal(T item){
-		Nodo<T> Nuevofinal = new Nodo<T> (item, null, fin);
+		Nodo1<T> Nuevofinal = new Nodo1<T> (item, null, fin);
 		if (!estaVacia()) {
 			
 			fin.cambiarSiguiente(Nuevofinal);
 			fin = Nuevofinal;
 			tamaño++;
 		}else{
-			fin = new Nodo<T>(item, null, null);  
+			fin = new Nodo1<T>(item, null, null);  
 			inicio=fin;
 			tamaño++;
 		}
@@ -63,7 +61,7 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 			fin.cambiarSiguiente(null);
 			//si no esta ni al principio ni al final
 		}else{
-			Nodo<T> aux=inicio.darSiguiente();
+			Nodo1<T> aux=inicio.darSiguiente();
 			boolean f=true;
 			while (aux!=null && f ) {
 				if (aux.obtenerItem().equals(item)) {
@@ -80,7 +78,7 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 	}
 
 	public T darElemento(int i){
-		Nodo<T> aux=inicio;
+		Nodo1<T> aux=inicio;
 		int apuntador=0;
 		
 		while (aux!=null) {
@@ -95,20 +93,7 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 		}
 		return null;
 	}
-	public T darElementoPorObjeto(T i){
-		Nodo<T> aux=inicio;
-		
-		while (aux!=null) {
-			
-			if (i.compareTo(aux.getItem())==0) {
-				
-				return aux.obtenerItem();
-			}else{
-				aux = aux.darSiguiente();
-			}
-		}
-		return null;
-	}
+	
 	public T darUltimoElemento(){
 		if(tamaño==0){
 			return null;
@@ -117,8 +102,8 @@ public class listaDoble<T extends Comparable<T>> implements Iterable<T> {
 	}
 	
 	 private class ListIterator implements Iterator<T> {
-	        private Nodo<T> actual      = inicio;  // the node that is returned by next()
-	        private Nodo<T> lastAccessed = null;      // the last node to be returned by prev() or next()
+	        private Nodo1<T> actual      = inicio;  // the node that is returned by next()
+	        private Nodo1<T> lastAccessed = null;      // the last node to be returned by prev() or next()
 	                                               // reset to null upon intervening remove() or add()
 	        private int index = 0;
 
